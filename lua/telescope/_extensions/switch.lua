@@ -29,18 +29,24 @@ local find_switch_files = function(file_abs)
     for _, matcher in ipairs(global_config.matchers) do
         local from = matcher.from
         local to = matcher.to
-        local switch_file, ok = file_abs:gsub(from, to)
-        if ok == 1 then
-            local files = builtin_util.list_files(switch_file)
-            if #files > 0 then
-                for i = 1, #files do
-                    local file = files[i]
-                    table.insert(switch_files, {
-                        file_abs = file,
-                        alias = builtin_util.remove_common_parent_path(file_abs, file),
-                        name = matcher.name,
-                    })
-                end
+        local search = matcher.search
+        local files = nil
+        if search == nil then -- use match
+            local switch_file, ok = file_abs:gsub(from, to)
+            if ok == 1 then
+                files = builtin_util.list_files(switch_file)
+            end
+        elseif file_abs:match(from) then -- use search
+            local search_path = vim.fn.getcwd() .. search
+            files = builtin_util.find_files(search_path)
+        end
+        if files then
+            for _, file in ipairs(files) do
+                table.insert(switch_files, {
+                    file_abs = file,
+                    alias = builtin_util.remove_common_parent_path(file_abs, file),
+                    name = "(" .. matcher.name .. ")",
+                })
             end
         end
     end
@@ -72,7 +78,7 @@ local main = function(_)
             results = switch_files,
             entry_maker = function(entry)
                 return {
-                    display = string.format("(%s) %s %s", entry.name, global_config.picker.seperator, entry.alias),
+                    display = string.format("%s %s %s", entry.name, global_config.picker.seperator, entry.alias),
                     ordinal = entry.file_abs,
                     path = entry.file_abs,
                 }
@@ -104,7 +110,9 @@ return require("telescope").register_extension({
         for _, matcher in ipairs(ext_config.matchers or {}) do
             local existed = false
             for _, builtin_matcher in ipairs(global_config.matchers) do
-                if matcher.from == builtin_matcher.from and matcher.to == builtin_matcher.to then
+                if matcher.from == builtin_matcher.from and
+                    matcher.to == builtin_matcher.to and
+                    matcher.search == builtin_matcher.search then
                     existed = true
                     break
                 end

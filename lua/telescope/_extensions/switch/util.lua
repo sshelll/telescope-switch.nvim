@@ -64,4 +64,18 @@ util.list_files = function(pattern)
     return result
 end
 
+util.find_files = function(path)
+    local command = string.format("find %s -type f", path)
+    local handle = io.popen(command .. " 2>/dev/null")
+    if handle == nil then
+        return nil
+    end
+    local result = {}
+    for file in handle:lines() do
+        table.insert(result, file)
+    end
+    handle:close()
+    return result
+end
+
 return util

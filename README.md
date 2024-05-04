@@ -55,7 +55,8 @@ require('telescope').setup {
                 {
                     name = "plugin config",
                     from = "/lua/plugins.lua$",
-                    to = "/lua/plugin-config/*.lua",
+                    to = "/lua/plugin-config/*.lua", -- this is overriden by 'search'
+                    search = "/lua/plugin-config"    -- this works
                 },
                 {
                     name = "plugin list",
@@ -99,12 +100,45 @@ Here is one simple tip:
 
 if you have `( ) . % + - * ? [ ^ $` in `from` field, please add `%` to escape them.
 
+**2. Search**
 
-**2. Builtin Matchers**
+<u>If `search` was set, then `to` will be ignored.</u>
+
+`search` is used to find all files with the given path, and this path <u>should start with the 2nd level of</u> `vim.fn.getcwd()`.
+
+For example:
+
+```sh
+.
+├── go.mod
+├── go.sum
+├── .gitignore
+├── ast
+│   ├── parse.go
+│   └── parse_test.go
+└── util
+    ├── math.go
+    └── math_test.go
+
+```
+
+If you want to jump from `./ast/xx.go` to `./util/xx.go`, then config like this:
+
+```lua
+{
+    name = "ast to util",
+    from = "/ast/(.*).go$",
+    search = "/util"
+}
+```
+
+Why search? Because sometimes we don't have a common rule to jump!
+
+**3. Builtin Matchers**
 
 See `/lua/telescope/_extensions/switch/matcher.lua` for more detail. Currently there's only a golang matcher.
 
-Different matchers should have different `from + to`, otherwise it'll be filtered.
+Different matchers should have different `from + to + search`, otherwise it'll be filtered.
 
 
 ### B. Picker
