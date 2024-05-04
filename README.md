@@ -4,7 +4,6 @@
 
 
 ## Demo
-
 ![demo](./img/demo1.png)
 
 ![demo2](./img/demo2.png)
@@ -82,6 +81,8 @@ require('telescope').setup {
         }
     }
 }
+
+require('telescope').load_extension('switch')
 ```
 
 
