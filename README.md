@@ -1,5 +1,5 @@
 # telescope-switch.nvim
-> A [telescope](https://github.com/nvim-telescope/telescope.nvim) extension that allows you to switch between buffers, files, and other sources.
+> A [telescope](https://github.com/nvim-telescope/telescope.nvim) extension that helps you to switch between files.
 
 
 
