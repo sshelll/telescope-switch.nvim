@@ -89,9 +89,9 @@ require('telescope').load_extension('switch')
 
 ## Configuration QA
 
-### Matcher
+### A. Matcher
 
-**From && To**
+**1. From && To**
 
 Basically I use `${current_file_path}:gsub(from, to)` in lua to get the target files, so if you have any doubts about it, you can try to run this line of code in your lua REPL to test.
 
@@ -100,15 +100,16 @@ Here is one simple tip:
 if you have `( ) . % + - * ? [ ^ $` in `from` field, please add `%` to escape them.
 
 
-
-**Builtin Matchers**
+**2. Builtin Matchers**
 
 See `/lua/telescope/_extensions/switch/matcher.lua` for more detail. Currently there's only a golang matcher.
 
 Different matchers should have different `from + to`, otherwise it'll be filtered.
 
 
-
-### Picker
+### B. Picker
 
 See [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) for more detail.
+
+## Alternatives
+Inspired by [other.nvim](https://github.com/rgroli/other.nvim)
