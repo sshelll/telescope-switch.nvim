@@ -35,6 +35,9 @@ local find_switch_files = function(file_abs)
             local switch_file, ok = file_abs:gsub(from, to)
             if ok == 1 then
                 files = builtin_util.list_files(switch_file)
+                if not files or #files == 0 then
+                    files = { switch_file }
+                end
             end
         elseif file_abs:match(from) then -- use search
             local search_path = vim.fn.getcwd() .. search
@@ -77,11 +80,17 @@ local main = function(_)
         finder = finders.new_table {
             results = switch_files,
             entry_maker = function(entry)
-                return {
+                local result = {
                     display = string.format("%s %s %s", entry.name, global_config.picker.seperator, entry.alias),
                     ordinal = entry.file_abs,
                     path = entry.file_abs,
                 }
+                if vim.fn.filereadable(entry.file_abs) == 0 then
+                    result.display = "+ " .. result.display
+                else
+                    result.display = "• " .. result.display
+                end
+                return result
             end,
         },
         sorter = conf.generic_sorter(picker_opt),
