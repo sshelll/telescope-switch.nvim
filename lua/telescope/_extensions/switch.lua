@@ -88,7 +88,7 @@ local main = function(_)
                 if vim.fn.filereadable(entry.file_abs) == 0 then
                     result.display = "+ " .. result.display
                 else
-                    result.display = "• " .. result.display
+                    result.display = "* " .. result.display
                 end
                 return result
             end,
