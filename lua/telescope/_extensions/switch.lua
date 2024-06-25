@@ -11,6 +11,8 @@ local global_config = {
     matchers = {
         builtin_matchers.go_impl,
         builtin_matchers.go_test,
+        builtin_matchers.rust_mod,
+        builtin_matchers.rust_mod_file,
     },
     picker = {
         seperator = "⇒",
@@ -45,11 +47,13 @@ local find_switch_files = function(file_abs)
         end
         if files then
             for _, file in ipairs(files) do
-                table.insert(switch_files, {
-                    file_abs = file,
-                    alias = builtin_util.remove_common_parent_path(file_abs, file),
-                    name = "(" .. matcher.name .. ")",
-                })
+                if file ~= file_abs then
+                    table.insert(switch_files, {
+                        file_abs = file,
+                        alias = builtin_util.remove_common_parent_path(file_abs, file),
+                        name = "(" .. matcher.name .. ")",
+                    })
+                end
             end
         end
     end
