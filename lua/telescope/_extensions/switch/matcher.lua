@@ -12,4 +12,16 @@ builtin.go_impl = {
     to = '%1.go'
 }
 
+builtin.rust_mod = {
+    name = "rust mod.rs",
+    from = "(.*)/(.*)rs$",
+    to = "%1/mod.rs",
+}
+
+builtin.rust_mod_file = {
+    name = "rust mod file",
+    from = "(.*)/mod.rs$",
+    to = "%1/*.rs",
+}
+
 return builtin
