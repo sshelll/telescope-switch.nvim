@@ -94,7 +94,9 @@ require('telescope').load_extension('switch')
 
 **1. From && To**
 
-Basically I use `${current_file_path}:gsub(from, to)` in lua to get the target files, so if you have any doubts about it, you can try to run this line of code in your lua REPL to test.
+Basically I use `${current_file_path}:gsub(from, to)` in lua to get the `target pattern`, so if you have any doubts about it, you can try to run this line of code in your lua REPL to test.
+
+After getting the `target pattern`, I'll call `ls ${target_pattern}` to list all existed matched files, that's why you can use both of `*.go` and `%1.go` in `to` field.
 
 Here is one simple tip:
 
@@ -136,7 +138,7 @@ Why search? Because sometimes we don't have a common rule to jump!
 
 **3. Builtin Matchers**
 
-See `/lua/telescope/_extensions/switch/matcher.lua` for more detail. Currently there's only a golang matcher.
+See `lua/telescope/_extensions/switch/matcher.lua` for more detail. Currently there's only a golang matcher.
 
 Different matchers should have different `from + to + search`, otherwise it'll be filtered.
 
