@@ -11,8 +11,10 @@
 
 
 ## Usage
-
-`:Telescope switch`
+1. With command  
+   `:Telescope switch`
+3. With lua  
+   `require("telescope").extensions.switch.switch()`
 
 
 
