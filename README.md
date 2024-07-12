@@ -13,9 +13,9 @@
   * [Alternatives](#alternatives)
 
 ## Demo
-![demo](./img/demo1.png)
+![demo](https://github.com/sshelll/assets/blob/master/telescope-switch.nvim/demo1.png)
 
-![demo2](./img/demo2.png)
+![demo2](https://github.com/sshelll/assets/blob/master/telescope-switch.nvim/demo2.png)
 
 
 
