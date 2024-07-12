@@ -9,13 +9,6 @@ util.build_picker_opts = function(opt)
         theme_conf.previewer = require('telescope.previewers').vim_buffer_cat.new({})
     end
     return theme_conf
-    -- if opt.theme == 'ivy' then
-    --     return require("telescope.themes").get_ivy(theme_conf)
-    -- elseif opt.theme == 'cursor' then
-    --     return require("telescope.themes").get_cursor(theme_conf)
-    -- else
-    --     return require("telescope.themes").get_dropdown(theme_conf)
-    -- end
 end
 
 util.remove_common_parent_path = function(a, b)

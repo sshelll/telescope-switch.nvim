@@ -3,13 +3,14 @@ local builtin = {}
 builtin.go_test = {
     name = 'go test',
     from = '(.*).go$',
-    to = '%1_test.go'
+    to = '%1_test.go',
+    ignore_by = { 'go impl' },
 }
 
 builtin.go_impl = {
     name = 'go impl',
     from = '(.*)_test.go$',
-    to = '%1.go'
+    to = '%1.go',
 }
 
 builtin.rust_mod = {
