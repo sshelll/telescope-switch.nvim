@@ -106,6 +106,7 @@ Here is one simple tip:
 if you have `( ) . % + - * ? [ ^ $` in `from` field, please add `%` to escape them.
 
 **2. Ignore By**
+
 An array of `matcher.name` that you want to check.
 If any of them matches any files, then the current matcher will be ignored.
 
