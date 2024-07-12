@@ -1,7 +1,16 @@
 # telescope-switch.nvim
 > A [telescope](https://github.com/nvim-telescope/telescope.nvim) extension that helps you to switch between files.
 
-
+- [telescope-switch.nvim](#telescope-switchnvim)
+  * [Demo](#demo)
+  * [Usage](#usage)
+  * [Install](#install)
+  * [Setup](#setup)
+  * [Configuration QA](#configuration-qa)
+    + [A. Matcher](#a-matcher)
+    + [B. Picker](#b-picker)
+  * [Share your matcher](#share-your-matcher)
+  * [Alternatives](#alternatives)
 
 ## Demo
 ![demo](./img/demo1.png)
@@ -177,7 +186,7 @@ Different matchers should have different `from + to + search` and different `nam
 
 See [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) for more detail.
 
-## Share your matcher!
+## Share your matcher
 
 If you have any great ideas about some common and useful matchers, please open a PR~~
 
