@@ -105,10 +105,14 @@ Here is one simple tip:
 
 if you have `( ) . % + - * ? [ ^ $` in `from` field, please add `%` to escape them.
 
+---
+
 **2. Ignore By**
 
 An array of `matcher.name` that you want to check.
 If any of them matches any files, then the current matcher will be ignored.
+
+---
 
 **3. Search**
 
@@ -144,6 +148,8 @@ If you want to jump from `./ast/xx.go` to `./util/xx.go`, then config like this:
 
 Why search? Because sometimes we don't have a common rule to jump!
 
+---
+
 **4. Builtin Matchers**
 
 See `lua/telescope/_extensions/switch/matcher.lua` for more detail.
@@ -170,6 +176,10 @@ Different matchers should have different `from + to + search` and different `nam
 ### B. Picker
 
 See [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) for more detail.
+
+## Share your matcher!
+
+If you have any great ideas about some common and useful matchers, please open a PR~~
 
 ## Alternatives
 Inspired by [other.nvim](https://github.com/rgroli/other.nvim)
