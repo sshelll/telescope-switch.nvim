@@ -4,16 +4,10 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
-local builtin_matchers = require('telescope._extensions.switch.matcher')
 local builtin_util = require('telescope._extensions.switch.util')
 
 local global_config = {
-    matchers = {
-        builtin_matchers.go_impl,
-        builtin_matchers.go_test,
-        builtin_matchers.rust_mod,
-        builtin_matchers.rust_mod_file,
-    },
+    matchers = {},
     picker = {
         seperator = "⇒",
         layout_strategy = 'horizontal',
@@ -23,17 +17,25 @@ local global_config = {
             preview_width = 0.6,
         },
         preview = true,
-    }
+    },
+    matcher_map = {},
 }
 
 local find_switch_files = function(file_abs)
-    local switch_files = {}
+    -- get match result of each matcher
+    local match_result_map = {}
     for _, matcher in ipairs(global_config.matchers) do
         local from = matcher.from
         local to = matcher.to
         local search = matcher.search
         local files = nil
-        if search == nil then -- use match
+
+        if search then -- use search
+            if file_abs:match(from) then
+                local search_path = vim.fn.getcwd() .. search
+                files = builtin_util.find_files(search_path)
+            end
+        else -- use match
             local switch_file, ok = file_abs:gsub(from, to)
             if ok == 1 then
                 files = builtin_util.list_files(switch_file)
@@ -41,12 +43,31 @@ local find_switch_files = function(file_abs)
                     files = { switch_file }
                 end
             end
-        elseif file_abs:match(from) then -- use search
-            local search_path = vim.fn.getcwd() .. search
-            files = builtin_util.find_files(search_path)
         end
+
         if files then
             for _, file in ipairs(files) do
+                match_result_map[matcher.name] = match_result_map[matcher.name] or {}
+                table.insert(match_result_map[matcher.name], file)
+            end
+        end
+    end
+
+    -- build switch files
+    local switch_files = {}
+    for _, matcher in ipairs(global_config.matchers) do
+        -- check if the matcher should be ignored
+        if matcher.ignore_by then
+            for _, ignore_by in ipairs(matcher.ignore_by) do
+                if match_result_map[ignore_by] then
+                    goto continue
+                end
+            end
+        end
+        -- add result to switch files
+        if match_result_map[matcher.name] then
+            for _, file in ipairs(match_result_map[matcher.name]) do
+                -- filter the current file
                 if file ~= file_abs then
                     table.insert(switch_files, {
                         file_abs = file,
@@ -56,7 +77,9 @@ local find_switch_files = function(file_abs)
                 end
             end
         end
+        ::continue::
     end
+
     return switch_files
 end
 
@@ -116,13 +139,23 @@ return require("telescope").register_extension({
         if setup_done == 1 then
             return
         end
+        setup_done = 1
+
+        -- init picker config
         ext_config = ext_config or {}
         if ext_config.picker then
             global_config.picker = vim.tbl_extend("force", global_config.picker, ext_config.picker)
         end
+
+        -- init matchers
         for _, matcher in ipairs(ext_config.matchers or {}) do
+            matcher.ignore = matcher.ignore or false
             local existed = false
             for _, builtin_matcher in ipairs(global_config.matchers) do
+                if matcher.name == builtin_matcher.name then
+                    existed = true
+                    break
+                end
                 if matcher.from == builtin_matcher.from and
                     matcher.to == builtin_matcher.to and
                     matcher.search == builtin_matcher.search then
@@ -134,7 +167,11 @@ return require("telescope").register_extension({
                 table.insert(global_config.matchers, matcher)
             end
         end
-        setup_done = 1
+
+        -- build matcher name map
+        for _, matcher in ipairs(global_config.matchers) do
+            global_config.matcher_map[matcher.name] = matcher
+        end
     end,
     exports = {
         switch = main

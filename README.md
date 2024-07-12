@@ -48,6 +48,7 @@ require('telescope').setup {
                     name = 'go test',
                     from = '(.*).go$',
                     to = '%1_test.go'
+                    ignore_by = { 'go impl' }, -- ignore this matcher if 'go impl' matches any files
                 },
                 {
                     name = 'go impl',
@@ -104,7 +105,11 @@ Here is one simple tip:
 
 if you have `( ) . % + - * ? [ ^ $` in `from` field, please add `%` to escape them.
 
-**2. Search**
+**2. Ignore By**
+An array of `matcher.name` that you want to check.
+If any of them matches any files, then the current matcher will be ignored.
+
+**3. Search**
 
 <u>If `search` was set, then `to` will be ignored.</u>
 
@@ -138,11 +143,27 @@ If you want to jump from `./ast/xx.go` to `./util/xx.go`, then config like this:
 
 Why search? Because sometimes we don't have a common rule to jump!
 
-**3. Builtin Matchers**
+**4. Builtin Matchers**
 
-See `lua/telescope/_extensions/switch/matcher.lua` for more detail. Currently there's only a golang matcher.
+See `lua/telescope/_extensions/switch/matcher.lua` for more detail.
 
-Different matchers should have different `from + to + search`, otherwise it'll be filtered.
+You can use `require('telescope._extensions.switch.matcher').go_test` to use the builtin matcher:
+
+```lua
+switch  = {
+    matchers = {
+        require('telescope._extensions.switch.matcher').go_test,
+        require('telescope._extensions.switch.matcher').go_impl,
+        {
+            name = "rust test",
+            from = "/src/(.*).rs$",
+            search = "/tests",
+        },
+    },
+}
+```
+
+Different matchers should have different `from + to + search` and different `name`, otherwise it'll be filtered.
 
 
 ### B. Picker
