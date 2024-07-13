@@ -18,7 +18,6 @@ local global_config = {
         },
         preview = true,
     },
-    matcher_map = {},
 }
 
 local find_switch_files = function(file_abs)
@@ -163,11 +162,6 @@ return require("telescope").register_extension({
             if not existed then
                 table.insert(global_config.matchers, matcher)
             end
-        end
-
-        -- build matcher name map
-        for _, matcher in ipairs(global_config.matchers) do
-            global_config.matcher_map[matcher.name] = matcher
         end
     end,
     exports = {
