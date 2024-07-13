@@ -152,11 +152,8 @@ return require("telescope").register_extension({
             matcher.ignore = matcher.ignore or false
             local existed = false
             for _, builtin_matcher in ipairs(global_config.matchers) do
-                if matcher.name == builtin_matcher.name then
-                    existed = true
-                    break
-                end
-                if matcher.from == builtin_matcher.from and
+                if matcher.name == builtin_matcher.name and
+                    matcher.from == builtin_matcher.from and
                     matcher.to == builtin_matcher.to and
                     matcher.search == builtin_matcher.search then
                     existed = true

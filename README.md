@@ -179,7 +179,7 @@ switch  = {
 }
 ```
 
-Different matchers should have different `from + to + search` and different `name`, otherwise it'll be filtered.
+Different matchers should have different `name + from + to + search`, otherwise it'll be filtered.
 
 
 ### B. Picker
