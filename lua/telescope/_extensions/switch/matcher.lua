@@ -25,4 +25,10 @@ builtin.rust_mod_file = {
     to = "%1/*.rs",
 }
 
+builtin.same_dir = {
+    name = "same dir",
+    from = "(.*)/(.*)$",
+    to = "%1/*",
+}
+
 return builtin

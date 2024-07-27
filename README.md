@@ -108,7 +108,7 @@ require('telescope').load_extension('switch')
 
 Basically I use `${current_file_path}:gsub(from, to)` in lua to get the `target pattern`, so if you have any doubts about it, you can try to run this line of code in your lua REPL to test.
 
-After getting the `target pattern`, I'll call `ls ${target_pattern}` to list all existed matched files, that's why you can use both of `*.go` and `%1.go` in `to` field.
+After getting the `target pattern`, I'll call `find ${target_pattern} -type f -maxdepth 0` to list all existed matched files, that's why you can use both of `*.go` and `%1.go` in `to` field.
 
 Here is one simple tip:
 

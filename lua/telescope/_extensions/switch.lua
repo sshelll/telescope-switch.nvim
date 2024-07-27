@@ -37,7 +37,7 @@ local find_switch_files = function(file_abs)
         else -- use match
             local switch_file, ok = file_abs:gsub(from, to)
             if ok == 1 then
-                files = builtin_util.list_files(switch_file)
+                files = builtin_util.list_files_by_find(switch_file)
                 if not files or #files == 0 then
                     files = { switch_file }
                 end
